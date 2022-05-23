@@ -49,46 +49,6 @@ void OrgChart::Iterator::generate_begin_reverse_order_iterator(OrgChart::Node *v
     }
 }
 
-void OrgChart::Iterator::generate_reverse_order_iterator(OrgChart::Node *vertex_param)
-{
-
-    /*
-    i had my own implementation for the function but it was not good for the tests
-    i searched the web and used geeksforgeeks implemetation with stack and a queue
-    */
-    // https://www.geeksforgeeks.org/reverse-level-order-traversal/
-    if (vertex_param == nullptr)
-    {
-        throw std::out_of_range("not good tree sended");
-    }
-    Node *root = vertex_param;
-    stack<Node *> Stack;
-    queue<Node *> Queue;
-    Queue.push(root);
-
-    while (!Queue.empty())
-    {
-        /* Dequeue node and make it root */
-        root = Queue.front();
-        Queue.pop();
-        Stack.push(root);
-
-        //        https://stackoverflow.com/questions/3610933/iterating-c-vector-from-the-end-to-the-beginning
-        /* Enqueue right child */
-        for (auto i = root->children.rbegin(); i != root->children.rend(); ++i)
-        {
-            Queue.push(*i); // NOTE: RIGHT CHILD IS ENQUEUED BEFORE LEF
-        }
-    }
-
-    // Now pop all items from stack one by one and print them
-    while (!Stack.empty())
-    {
-        inner.push_back(Stack.top());
-        Stack.pop();
-    }
-}
-
 void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *vertex_param)
 {
 
@@ -158,18 +118,6 @@ void OrgChart::Iterator::end_helper(OrgChart::Node *vertex_param)
     }
 }
 
-void OrgChart::Iterator::generate_end_level_order_iterator(OrgChart::Node *vertex_param)
-{
-    if (vertex_param == nullptr)
-    {
-        throw std::out_of_range("not good tree sended");
-    }
-    /*
-    a try to make the end function more efficient
-    */
-    end_helper(vertex_param);
-    inner.push_back(end_helper_list.back());
-}
 
 void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex_param)
 {
@@ -189,22 +137,6 @@ void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex
     }
 }
 
-void OrgChart::Iterator::generate_end_preorder_iterator(OrgChart::Node *vertex_param)
-{
-    if (vertex_param == nullptr)
-    {
-        throw std::out_of_range("not good tree sended");
-    }
-    size_t i = 0;
-    for (i = 0; i < vertex_param->children.size(); i++)
-    {
-        inner.push_back(vertex_param->children.at(i));
-    }
-    for (i = 0; i < vertex_param->children.size(); i++)
-    {
-        generate_end_preorder_iterator(vertex_param->children.at(i));
-    }
-}
 
 OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
 {
@@ -214,30 +146,27 @@ OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
     }
     switch (type)
     {
-    case begin_reverse_order_enum:
-        generate_begin_reverse_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case reverse_order_enum:
-        generate_reverse_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case begin_level_order_enum:
-        generate_begin_level_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case end_level_order_enum:
-        generate_end_level_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case begin_preorder_enum:
-        generate_begin_preorder_iterator(root);
-        current = *inner.begin();
-        break;
-    case end_preorder_enum:
-        generate_end_preorder_iterator(root);
-        current = *inner.begin();
-        break;
+        case begin_reverse_order_enum:
+            generate_begin_reverse_order_iterator(root);
+            current = *inner.begin();
+            break;
+        case reverse_order_enum:
+            current = end_helper_iterator;
+            break;
+        case begin_level_order_enum:
+            generate_begin_level_order_iterator(root);
+            current = *inner.begin();
+            break;
+        case end_level_order_enum:
+            current = end_helper_iterator;
+            break;
+        case begin_preorder_enum:
+            generate_begin_preorder_iterator(root);
+            current = *inner.begin();
+            break;
+        case end_preorder_enum:
+            current = end_helper_iterator;
+            break;
     }
 }
 
