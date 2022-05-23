@@ -48,9 +48,9 @@ namespace ariel
         {
         public:
             explicit Node(const string &);
-
             vector<Node *> children;
             string value;
+            ~Node() = default;
         };
         Node *find_n(const string &, Node *);
 
@@ -73,8 +73,9 @@ namespace ariel
         public:
             Node *current;
             constexpr static Node* end_helper_iterator = nullptr;
-            list<Node *> inner;
+            list<Node *> inner_list;
             Iterator() : current(nullptr) {}
+            ~Iterator() = default;
             explicit Iterator(Node *temp) : current(temp) {}
             void generate_begin_reverse_order_iterator(Node *);
             void generate_begin_level_order_iterator(Node *);

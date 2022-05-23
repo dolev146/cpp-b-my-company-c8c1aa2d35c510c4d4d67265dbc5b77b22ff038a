@@ -8,19 +8,18 @@
 
 using namespace ariel;
 
-void OrgChart::Iterator::generate_begin_reverse_order_iterator(OrgChart::Node *vertex_param)
+void OrgChart::Iterator::generate_begin_reverse_order_iterator(OrgChart::Node *root)
 {
     /*
     i had my own implementation for the function but it was not good for the tests
     i searched the web and used geeksforgeeks implemetation with stack and a queue
     */
     // https://www.geeksforgeeks.org/reverse-level-order-traversal/
-    if (vertex_param == nullptr)
+    if (root == nullptr)
     {
         throw std::out_of_range("not good tree sended");
     }
 
-    Node *root = vertex_param;
     stack<Node *> Stack;
     queue<Node *> Queue;
 
@@ -32,7 +31,6 @@ void OrgChart::Iterator::generate_begin_reverse_order_iterator(OrgChart::Node *v
         root = Queue.front();
         Queue.pop();
         Stack.push(root);
-
         // https://stackoverflow.com/questions/3610933/iterating-c-vector-from-the-end-to-the-beginning
         /* Enqueue from the right side first */
         for (auto i = root->children.rbegin(); i != root->children.rend(); ++i)
@@ -40,16 +38,15 @@ void OrgChart::Iterator::generate_begin_reverse_order_iterator(OrgChart::Node *v
             Queue.push(*i); //
         }
     }
-
     // Now pop all items from stack one by one and print them
     while (!Stack.empty())
     {
-        inner.push_back(Stack.top());
+        inner_list.push_back(Stack.top());
         Stack.pop();
     }
 }
 
-void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *vertex_param)
+void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *root)
 {
 
     /*
@@ -58,7 +55,7 @@ void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *ver
   */
     // https://www.geeksforgeeks.org/level-order-tree-traversal/
 
-    if (vertex_param == nullptr)
+    if (root == nullptr)
     {
         throw std::out_of_range("not good tree sended");
     }
@@ -67,14 +64,14 @@ void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *ver
     queue<Node *> Queue;
 
     // Enqueue Root and initialize height
-    Queue.push(vertex_param);
+    Queue.push(root);
 
     while (!Queue.empty())
     {
         // Print front of queue and remove it from queue
         Node *temp = Queue.front();
         Queue.pop();
-        inner.push_back(temp);
+        inner_list.push_back(temp);
 
         // Enqueue all children of removed item
         for (auto i = temp->children.begin(); i != temp->children.end(); ++i)
@@ -84,16 +81,15 @@ void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *ver
     }
 }
 
-void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex_param)
+void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *root)
 {
-    if (vertex_param == nullptr)
+    if (root == nullptr)
     {
         throw std::out_of_range("not good tree sended");
     }
     // https://www.tutorialspoint.com/data_structures_algorithms/tree_traversal_in_c.htm#
 
-    Node *root = vertex_param;
-    inner.push_back(root);
+    inner_list.push_back(root);
 
     // loop over the children and call generate_begin_preorder_iterator on them also
     for (auto i = root->children.begin(); i != root->children.end(); ++i)
@@ -112,21 +108,21 @@ OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
     {
     case begin_reverse_order_enum:
         generate_begin_reverse_order_iterator(root);
-        current = *inner.begin();
+        current = *inner_list.begin();
         break;
     case reverse_order_enum:
         current = end_helper_iterator;
         break;
     case begin_level_order_enum:
         generate_begin_level_order_iterator(root);
-        current = *inner.begin();
+        current = *inner_list.begin();
         break;
     case end_level_order_enum:
         current = end_helper_iterator;
         break;
     case begin_preorder_enum:
         generate_begin_preorder_iterator(root);
-        current = *inner.begin();
+        current = *inner_list.begin();
         break;
     case end_preorder_enum:
         current = end_helper_iterator;
@@ -146,23 +142,25 @@ string *OrgChart::Iterator::operator->() const
 
 OrgChart::Iterator &ariel::OrgChart::Iterator::operator++()
 {
-    if (inner.size() > 1)
+
+    if (current == end_helper_iterator)
     {
-        inner.erase(inner.begin());
-        current = *inner.begin();
+        throw std::out_of_range("iterator is out of range");
     }
-    else
+    if (inner_list.empty())
     {
-        current = nullptr;
+        current = end_helper_iterator;
+        return *this;
     }
+    inner_list.erase(inner_list.begin());
+    current = *inner_list.begin();
     return *this;
 }
 
- OrgChart::Iterator OrgChart::Iterator::operator++(int)
+OrgChart::Iterator OrgChart::Iterator::operator++(int)
 {
-    //    return ariel::OrgChart::Iterator();
-    Iterator temp(*inner.begin());
-    ++*this;
+    OrgChart::Iterator temp = *this;
+    ++(*this);
     return temp;
 }
 
@@ -179,9 +177,9 @@ bool OrgChart::Iterator::operator!=(const OrgChart::Iterator &other) const
 ostream &ariel::operator<<(ostream &os, const ariel::OrgChart &tree)
 {
     /**
-     * @brief print the tree 
-     * 
-     * 
+     * @brief print the tree
+     *
+     *
      */
     OrgChart::Iterator it = tree.begin();
     while (it != tree.end())
@@ -189,14 +187,13 @@ ostream &ariel::operator<<(ostream &os, const ariel::OrgChart &tree)
         os << *it << " ";
         ++it;
     }
-
     return os;
 }
 
 /**
  * @brief makeing use of the switch case to make the iterator work
  *  with the enums
- * @return OrgChart::Iterator 
+ * @return OrgChart::Iterator
  */
 
 OrgChart::Iterator OrgChart::begin() const
@@ -242,8 +239,8 @@ OrgChart::Iterator OrgChart::end_preorder() const
 OrgChart &OrgChart::add_root(const string &vertex_param)
 {
     /**
-     * @brief Construct a new if object with the given vertex_param 
-     * 
+     * @brief Construct a new if object with the given vertex_param
+     *
      */
     if (root_tree == nullptr)
     {
