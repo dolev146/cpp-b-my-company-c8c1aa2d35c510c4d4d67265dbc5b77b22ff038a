@@ -77,11 +77,11 @@ namespace ariel
             Iterator() : current(nullptr) {}
             explicit Iterator(Node *temp) : current(temp) {}
             void generate_begin_reverse_order_iterator(Node *);
-            
+
             void generate_begin_level_order_iterator(Node *);
-            
+
             void generate_begin_preorder_iterator(Node *);
-            
+
 
             Iterator(Node *, type_of_request);
             string &operator*() const;
@@ -91,9 +91,9 @@ namespace ariel
             bool operator==(const Iterator &) const;
             bool operator!=(const Iterator &) const;
 
-           
 
-          
+
+
         };
 
         Iterator begin() const;
