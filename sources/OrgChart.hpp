@@ -56,16 +56,16 @@ namespace ariel
 
     public:
         Node *root_tree = nullptr;
-        unordered_map<string, Node *> map_tree;
+        
         OrgChart() = default;
         // Shallow copy
-        OrgChart(OrgChart &&other) noexcept;
+        OrgChart(OrgChart &&) noexcept;
         // deep copy
-        OrgChart(const OrgChart &other);
+        OrgChart(const OrgChart &);
         //------Operators-----
-        OrgChart &operator=(OrgChart other);
+        OrgChart &operator=(OrgChart);
         ~OrgChart() = default;
-        OrgChart &add_root(const string &x);
+        OrgChart &add_root(const string &);
         OrgChart &add_sub(const string &exsist, const string &insert_);
 
         class Iterator
@@ -77,23 +77,16 @@ namespace ariel
             Iterator() : current(nullptr) {}
             explicit Iterator(Node *temp) : current(temp) {}
             void generate_begin_reverse_order_iterator(Node *);
-
             void generate_begin_level_order_iterator(Node *);
-
             void generate_begin_preorder_iterator(Node *);
-
 
             Iterator(Node *, type_of_request);
             string &operator*() const;
             string *operator->() const;
             Iterator &operator++();
-            const Iterator operator++(int);
+             Iterator operator++(int);
             bool operator==(const Iterator &) const;
             bool operator!=(const Iterator &) const;
-
-
-
-
         };
 
         Iterator begin() const;
