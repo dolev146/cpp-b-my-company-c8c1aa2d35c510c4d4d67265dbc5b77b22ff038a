@@ -53,7 +53,7 @@ namespace ariel
             string value;
         };
         Node *find_n(const string &, Node *);
-        
+
     public:
         Node *root_tree = nullptr;
         unordered_map<string, Node *> map_tree;
@@ -74,27 +74,26 @@ namespace ariel
             Node *current;
             constexpr static Node* end_helper_iterator = nullptr;
             list<Node *> inner;
-            list<Node *> end_helper_list;
             Iterator() : current(nullptr) {}
             explicit Iterator(Node *temp) : current(temp) {}
             void generate_begin_reverse_order_iterator(Node *);
-            void generate_reverse_order_iterator(Node *);
+            
             void generate_begin_level_order_iterator(Node *);
-            void generate_end_level_order_iterator(Node *);
+            
             void generate_begin_preorder_iterator(Node *);
-            void generate_end_preorder_iterator(Node *);
+            
 
             Iterator(Node *, type_of_request);
             string &operator*() const;
             string *operator->() const;
             Iterator &operator++();
-            Iterator operator++(int);
+            const Iterator operator++(int);
             bool operator==(const Iterator &) const;
             bool operator!=(const Iterator &) const;
 
-            void end_helper(Node *);
+           
 
-            void perorder_recursive_helper(Node *vertex_param);
+          
         };
 
         Iterator begin() const;

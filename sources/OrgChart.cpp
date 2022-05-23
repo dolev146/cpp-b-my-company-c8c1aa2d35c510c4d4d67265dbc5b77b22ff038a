@@ -84,39 +84,6 @@ void OrgChart::Iterator::generate_begin_level_order_iterator(OrgChart::Node *ver
     }
 }
 
-void OrgChart::Iterator::end_helper(OrgChart::Node *vertex_param)
-{
-    /*
-  i had my own implementation for the function but it was not good for the tests
-  i searched the web and used geeksforgeeks implemetation with stack and a queue
-  */
-    // https://www.geeksforgeeks.org/level-order-tree-traversal/
-
-    if (vertex_param == nullptr)
-    {
-        throw std::out_of_range("not good tree sended");
-    }
-
-    // Create an empty queue for level order traversal
-    queue<Node *> Queue;
-
-    // Enqueue Root and initialize height
-    Queue.push(vertex_param);
-
-    while (!Queue.empty())
-    {
-        // Print front of queue and remove it from queue
-        Node *temp = Queue.front();
-        Queue.pop();
-        inner.push_back(temp);
-
-        // Enqueue all children of removed item
-        for (auto i = temp->children.begin(); i != temp->children.end(); ++i)
-        {
-            Queue.push(*i);
-        }
-    }
-}
 
 void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex_param)
 {
@@ -144,27 +111,27 @@ OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
     }
     switch (type)
     {
-    case begin_reverse_order_enum:
-        generate_begin_reverse_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case reverse_order_enum:
-        current = end_helper_iterator;
-        break;
-    case begin_level_order_enum:
-        generate_begin_level_order_iterator(root);
-        current = *inner.begin();
-        break;
-    case end_level_order_enum:
-        current = end_helper_iterator;
-        break;
-    case begin_preorder_enum:
-        generate_begin_preorder_iterator(root);
-        current = *inner.begin();
-        break;
-    case end_preorder_enum:
-        current = end_helper_iterator;
-        break;
+        case begin_reverse_order_enum:
+            generate_begin_reverse_order_iterator(root);
+            current = *inner.begin();
+            break;
+        case reverse_order_enum:
+            current = end_helper_iterator;
+            break;
+        case begin_level_order_enum:
+            generate_begin_level_order_iterator(root);
+            current = *inner.begin();
+            break;
+        case end_level_order_enum:
+            current = end_helper_iterator;
+            break;
+        case begin_preorder_enum:
+            generate_begin_preorder_iterator(root);
+            current = *inner.begin();
+            break;
+        case end_preorder_enum:
+            current = end_helper_iterator;
+            break;
     }
 }
 
@@ -192,7 +159,7 @@ OrgChart::Iterator &ariel::OrgChart::Iterator::operator++()
     return *this;
 }
 
-OrgChart::Iterator OrgChart::Iterator::operator++(int)
+const OrgChart::Iterator OrgChart::Iterator::operator++(int)
 {
     //    return ariel::OrgChart::Iterator();
     Iterator temp(*inner.begin());
