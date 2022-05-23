@@ -118,7 +118,6 @@ void OrgChart::Iterator::end_helper(OrgChart::Node *vertex_param)
     }
 }
 
-
 void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex_param)
 {
     if (vertex_param == nullptr)
@@ -137,7 +136,6 @@ void OrgChart::Iterator::generate_begin_preorder_iterator(OrgChart::Node *vertex
     }
 }
 
-
 OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
 {
     if (root == nullptr)
@@ -146,27 +144,27 @@ OrgChart::Iterator::Iterator(OrgChart::Node *root, type_of_request type)
     }
     switch (type)
     {
-        case begin_reverse_order_enum:
-            generate_begin_reverse_order_iterator(root);
-            current = *inner.begin();
-            break;
-        case reverse_order_enum:
-            current = end_helper_iterator;
-            break;
-        case begin_level_order_enum:
-            generate_begin_level_order_iterator(root);
-            current = *inner.begin();
-            break;
-        case end_level_order_enum:
-            current = end_helper_iterator;
-            break;
-        case begin_preorder_enum:
-            generate_begin_preorder_iterator(root);
-            current = *inner.begin();
-            break;
-        case end_preorder_enum:
-            current = end_helper_iterator;
-            break;
+    case begin_reverse_order_enum:
+        generate_begin_reverse_order_iterator(root);
+        current = *inner.begin();
+        break;
+    case reverse_order_enum:
+        current = end_helper_iterator;
+        break;
+    case begin_level_order_enum:
+        generate_begin_level_order_iterator(root);
+        current = *inner.begin();
+        break;
+    case end_level_order_enum:
+        current = end_helper_iterator;
+        break;
+    case begin_preorder_enum:
+        generate_begin_preorder_iterator(root);
+        current = *inner.begin();
+        break;
+    case end_preorder_enum:
+        current = end_helper_iterator;
+        break;
     }
 }
 
@@ -300,11 +298,20 @@ OrgChart &OrgChart::add_sub(const string &exsist, const string &insert_)
 
 OrgChart::OrgChart(const OrgChart &other)
 {
-    std::cout << "/* // deep copy  */" << '\n';
-    if (other.root_tree != nullptr)
+    /**
+     * @brief copy constructor
+     * @param other
+     */
+
+    root_tree = new Node(other.root_tree->value);
+    map_tree[other.root_tree->value] = root_tree;
+    for (const auto &x : other.map_tree)
     {
-        root_tree = new Node(other.root_tree->value);
-        rec_copy_childs(*other.root_tree, *root_tree);
+        Node *temp = new Node(x.first);
+        map_tree[x.first] = temp;
+        temp->value = x.first;
+        temp->children = x.second->children;
+        root_tree->children.push_back(temp);
     }
 }
 
@@ -324,7 +331,16 @@ OrgChart &OrgChart::operator=(OrgChart other)
     }
 
     root_tree = new Node(other.root_tree->value);
-    rec_copy_childs(*other.root_tree, *this->root_tree);
+    map_tree[other.root_tree->value] = root_tree;
+
+    for (const auto &x : other.map_tree)
+    {
+        Node *temp = new Node(x.first);
+        map_tree[x.first] = temp;
+        temp->value = x.first;
+        temp->children = x.second->children;
+        root_tree->children.push_back(temp);
+    }
     return *this;
 }
 

@@ -52,14 +52,8 @@ namespace ariel
             vector<Node *> children;
             string value;
         };
-
         Node *find_n(const string &, Node *);
-
-        void rec_copy_childs(const Node &, Node &)
-        {
-            // TODO implement this function
-        }
-
+        
     public:
         Node *root_tree = nullptr;
         unordered_map<string, Node *> map_tree;
