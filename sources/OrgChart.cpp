@@ -202,7 +202,7 @@ OrgChart::Iterator OrgChart::Iterator::operator++(int)
 
 bool OrgChart::Iterator::operator==(const OrgChart::Iterator &other) const
 {
-    return this->current == nullptr;
+    return this->current == other.current;
 }
 
 bool OrgChart::Iterator::operator!=(const OrgChart::Iterator &other) const
