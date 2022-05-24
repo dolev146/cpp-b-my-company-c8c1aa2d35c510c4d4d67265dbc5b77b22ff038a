@@ -248,7 +248,10 @@ OrgChart &OrgChart::add_root(const string &vertex_param)
     }
     else
     {
-        root_tree->value = vertex_param;
+        // free the old root and make a new one
+        delete root_tree;
+        root_tree = new Node(vertex_param);
+        // root_tree->value = vertex_param;
     }
     return *this;
 }
@@ -303,7 +306,7 @@ OrgChart &OrgChart::operator=(OrgChart other)
      * @brief move assignment operator
      * @param other
      */
-
+    
     swap(root_tree, other.root_tree);
     return *this;
 }
@@ -331,7 +334,13 @@ OrgChart::Node *OrgChart::find_n(const string &find, OrgChart::Node *node)
     return nullptr;
 }
 
+
+
 OrgChart::Node::Node(const string &value)
 {
+
     this->value = string(value);
 }
+
+
+// clang++-9 -std=c++2a -Wall -Wextra -Werror -g -o OrgChart OrgChart.cpp
