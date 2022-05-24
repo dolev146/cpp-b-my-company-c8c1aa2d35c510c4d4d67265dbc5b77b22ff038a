@@ -376,45 +376,49 @@ int main()
     {
         cout << "level order test failed 11111 new Owner" << endl;
     }
-    if (lvl_order.at(1) != "General_Manager")
+    if (lvl_order.at(1).compare("General_Manager"))
     {
         cout << "level order test failed General_Manager" << endl;
     };
-    if (lvl_order.at(2) != "Share_Holders")
+    if (lvl_order.at(2).compare("Share_Holders"))
     {
         cout << "level order test failed Share_Holders" << endl;
     };
-    if (lvl_order.at(3) != "Head_of_operations")
+    if (lvl_order.at(3).compare("Head_of_operations"))
     {
         cout << "level order test failed Head_of_operations" << endl;
     };
-    if (lvl_order.at(4) != "Head_Coach")
+    if (lvl_order.at(4).compare("Head_Coach"))
     {
         cout << "level order test failed Head_Coach" << endl;
     };
-    if (lvl_order.at(5) != "Assistant_Coach")
+    if (lvl_order.at(5).compare("Assistant_Coach"))
     {
         cout << "level order test failed Assistant_Coach" << endl;
     };
-    if (lvl_order.at(6) != "Sub_Share_Holder1")
+    if (lvl_order.at(6).compare("Sub_Share_Holder1"))
     {
         cout << "level order test failed Sub_Share_Holder1 " << endl;
     };
-    if (lvl_order.at(7) != "Sub_Share_Holder2")
+    if (lvl_order.at(7).compare("Sub_Share_Holder2"))
     {
         cout << "level order test failed Sub_Share_Holder2" << endl;
     };
-    if (lvl_order.at(8) != "Team_Doctor")
+    if (lvl_order.at(8).compare("Team_Doctor"))
     {
         cout << "level order test failed Team_Doctor" << endl;
     };
-    if (lvl_order.at(9) != "Head_Scout")
+    if (lvl_order.at(9).compare("Head_Scout"))
     {
         cout << "level order test failed Head_Scout" << endl;
     };
-    if (lvl_order.at(10) != "Captain")
+    if (lvl_order.at(10).compare("Captain"))
     {
         cout << "level order test failed Captain" << endl;
+    };
+    if (lvl_order.at(11).compare("Team_Physiotherapist"))
+    {
+        cout << "level order test failed Team_Physiotherapist" << endl;
     };
 
     // lvl_order.clear();
