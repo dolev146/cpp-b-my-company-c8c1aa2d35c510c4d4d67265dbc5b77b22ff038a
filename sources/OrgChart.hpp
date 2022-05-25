@@ -57,7 +57,7 @@ namespace ariel
     public:
         Node *root_tree = nullptr;
         vector<Node *> delete_list; // everything that helper needs to be private for future
-        void delete_tree(Node *);
+        
         OrgChart() = default;
 
         // deep copy

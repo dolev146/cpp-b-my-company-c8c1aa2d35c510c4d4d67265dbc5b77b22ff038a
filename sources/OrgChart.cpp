@@ -324,16 +324,6 @@ OrgChart::Node *OrgChart::find_n(const string &find, OrgChart::Node *node)
     return nullptr;
 }
 
-void OrgChart::delete_tree(Node *root_tree)
-{
-    delete_list.push_back(root_tree);
-
-    // loop over the children and call generate_begin_preorder_iterator on them also
-    for (auto i = root_tree->children.begin(); i != root_tree->children.end(); ++i)
-    {
-        delete_tree(*i);
-    }
-}
 
 OrgChart::~OrgChart()
 {
@@ -341,10 +331,10 @@ OrgChart::~OrgChart()
     /**
      * @brief destructor
      */
-    while (!delete_list.empty())
+    delete root_tree;
+    for (auto i = delete_list.begin(); i != delete_list.end(); ++i)
     {
-        delete delete_list.back();
-        delete_list.pop_back();
+        delete *i;
     }
 }
 
