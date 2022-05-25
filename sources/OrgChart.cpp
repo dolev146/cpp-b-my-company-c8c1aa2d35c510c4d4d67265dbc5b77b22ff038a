@@ -266,11 +266,13 @@ OrgChart &OrgChart::add_sub(const string &exsist, const string &insert_param)
     {
         Node *temp = new Node(insert_param);
         found->children.push_back(temp);
+        delete_list.push_back(temp);
     }
     else
     {
         Node *temp = new Node(insert_param);
         found->children.push_back(temp);
+        delete_list.push_back(temp);
     }
     return *this;
 }
@@ -283,16 +285,6 @@ OrgChart::OrgChart(const OrgChart &other)
      */
 
     root_tree = new Node(other.root_tree->value);
-}
-
-OrgChart::OrgChart(OrgChart &&other) noexcept
-{
-    /**
-     * @brief move constructor
-     * @param other
-     */
-    root_tree = other.root_tree;
-    other.root_tree = nullptr;
 }
 
 OrgChart &OrgChart::operator=(OrgChart other)
@@ -329,46 +321,27 @@ OrgChart::Node *OrgChart::find_n(const string &find, OrgChart::Node *node)
     return nullptr;
 }
 
+void OrgChart::delete_tree(Node *root_tree)
+{
+    delete_list.push_back(root_tree);
+
+    // loop over the children and call generate_begin_preorder_iterator on them also
+    for (auto i = root_tree->children.begin(); i != root_tree->children.end(); ++i)
+    {
+        delete_tree(*i);
+    }
+}
+
 OrgChart::~OrgChart()
 {
 
     /**
      * @brief destructor
      */
-
-    /*
- i had my own implementation for the function but it was not good for the tests
- i searched the web and used geeksforgeeks implemetation with stack and a queue
- */
-    // https://www.geeksforgeeks.org/reverse-level-order-traversal/
-    if (root_tree == nullptr)
+    while (!delete_list.empty())
     {
-        throw std::out_of_range("not good tree sended");
-    }
-
-    stack<Node *> Stack;
-    queue<Node *> Queue;
-
-    Queue.push(root_tree);
-
-    while (!Queue.empty())
-    {
-        /* Dequeue node and make it root */
-        auto root = Queue.front();
-        Queue.pop();
-        Stack.push(root);
-        // https://stackoverflow.com/questions/3610933/iterating-c-vector-from-the-end-to-the-beginning
-        /* Enqueue from the right side first */
-        for (auto i = root->children.rbegin(); i != root->children.rend(); ++i)
-        {
-            Queue.push(*i); //
-        }
-    }
-    // Now pop all items from stack one by one and print them
-    while (!Stack.empty())
-    {
-        delete Stack.top();
-        Stack.pop();
+        delete delete_list.back();
+        delete_list.pop_back();
     }
 }
 

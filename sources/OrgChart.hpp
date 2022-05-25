@@ -56,23 +56,23 @@ namespace ariel
 
     public:
         Node *root_tree = nullptr;
-        
+        vector<Node *> delete_list;
+        void delete_tree(Node *);
         OrgChart() = default;
-        // Shallow copy
-        OrgChart(OrgChart &&) noexcept;
+
         // deep copy
         OrgChart(const OrgChart &);
         //------Operators-----
         OrgChart &operator=(OrgChart);
         ~OrgChart();
         OrgChart &add_root(const string &);
-        OrgChart &add_sub(const string &exsist, const string &insert_);
+        OrgChart &add_sub(const string &, const string &);
 
         class Iterator
         {
         public:
             Node *current;
-            constexpr static Node* end_helper_iterator = nullptr;
+            constexpr static Node *end_helper_iterator = nullptr;
             list<Node *> inner_list;
             Iterator() : current(nullptr) {}
             ~Iterator() = default;
@@ -85,7 +85,7 @@ namespace ariel
             string &operator*() const;
             string *operator->() const;
             Iterator &operator++();
-             Iterator operator++(int);
+            Iterator operator++(int);
             bool operator==(const Iterator &) const;
             bool operator!=(const Iterator &) const;
         };
