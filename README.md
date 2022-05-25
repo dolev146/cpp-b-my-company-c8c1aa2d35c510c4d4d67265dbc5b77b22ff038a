@@ -1,5 +1,6 @@
 ![image](https://user-images.githubusercontent.com/62290677/170187520-cb639db8-5e06-46a8-a382-e7dbddd8d01e.png)
 
+עץ שבהתחלה לא עבד לי ועכשיו כן , אז אני מראה שהוא עובד ב main שלי 
 
 
 <div dir="rtl" lang="he">
