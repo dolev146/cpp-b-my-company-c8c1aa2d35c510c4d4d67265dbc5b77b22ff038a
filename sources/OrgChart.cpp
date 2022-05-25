@@ -249,7 +249,7 @@ OrgChart &OrgChart::add_root(const string &vertex_name)
     }
     else
     {
-        
+
         root_tree->value = vertex_name;
     }
     return *this;
@@ -275,8 +275,6 @@ OrgChart &OrgChart::add_sub(const string &exsist, const string &insert_param)
     return *this;
 }
 
-
-
 OrgChart::OrgChart(const OrgChart &other)
 {
     /**
@@ -285,7 +283,6 @@ OrgChart::OrgChart(const OrgChart &other)
      */
 
     root_tree = new Node(other.root_tree->value);
-    
 }
 
 OrgChart::OrgChart(OrgChart &&other) noexcept
@@ -330,6 +327,49 @@ OrgChart::Node *OrgChart::find_n(const string &find, OrgChart::Node *node)
         }
     }
     return nullptr;
+}
+
+OrgChart::~OrgChart()
+{
+
+    /**
+     * @brief destructor
+     */
+
+    /*
+ i had my own implementation for the function but it was not good for the tests
+ i searched the web and used geeksforgeeks implemetation with stack and a queue
+ */
+    // https://www.geeksforgeeks.org/reverse-level-order-traversal/
+    if (root_tree == nullptr)
+    {
+        throw std::out_of_range("not good tree sended");
+    }
+
+    stack<Node *> Stack;
+    queue<Node *> Queue;
+
+    Queue.push(root_tree);
+
+    while (!Queue.empty())
+    {
+        /* Dequeue node and make it root */
+        auto root = Queue.front();
+        Queue.pop();
+        Stack.push(root);
+        // https://stackoverflow.com/questions/3610933/iterating-c-vector-from-the-end-to-the-beginning
+        /* Enqueue from the right side first */
+        for (auto i = root->children.rbegin(); i != root->children.rend(); ++i)
+        {
+            Queue.push(*i); //
+        }
+    }
+    // Now pop all items from stack one by one and print them
+    while (!Stack.empty())
+    {
+        delete Stack.top();
+        Stack.pop();
+    }
 }
 
 OrgChart::Node::Node(const string &value)

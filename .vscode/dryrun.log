@@ -1,0 +1,13 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/dolev_linux/gggg/cpp-b-my-company-c8c1aa2d35c510c4d4d67265dbc5b77b22ff038a'
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 --compile TestRunner.cpp -o TestRunner.o
+curl https://raw.githubusercontent.com/renanarimon/cpp_5b_test/master/Test.cpp > StudentTest1.cpp
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 --compile StudentTest1.cpp -o StudentTest1.o
+curl https://raw.githubusercontent.com/ShauliTaragin/Orgchart-A/main/Test.cpp > StudentTest2.cpp
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 --compile StudentTest2.cpp -o StudentTest2.o
+curl https://raw.githubusercontent.com/dvirGev/CPP--Ex5-par1/main/Test.cpp > StudentTest3.cpp
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 --compile StudentTest3.cpp -o StudentTest3.o
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 --compile sources/OrgChart.cpp -o objects/OrgChart.o
+clang++-9 -std=c++2a -Werror -Wsign-conversion -Isources -ggdb3 TestRunner.o StudentTest1.o StudentTest2.o StudentTest3.o objects/OrgChart.o -o test
+make: Leaving directory '/home/dolev_linux/gggg/cpp-b-my-company-c8c1aa2d35c510c4d4d67265dbc5b77b22ff038a'
+ 

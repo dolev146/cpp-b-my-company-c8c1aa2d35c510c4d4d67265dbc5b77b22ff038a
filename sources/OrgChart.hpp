@@ -64,7 +64,7 @@ namespace ariel
         OrgChart(const OrgChart &);
         //------Operators-----
         OrgChart &operator=(OrgChart);
-        ~OrgChart() = default;
+        ~OrgChart();
         OrgChart &add_root(const string &);
         OrgChart &add_sub(const string &exsist, const string &insert_);
 
