@@ -1,3 +1,4 @@
+
 //
 // Created by Dolev_Lenovo on 22/05/2022.
 //
@@ -236,22 +237,20 @@ OrgChart::Iterator OrgChart::end_preorder() const
     return Iterator(root_tree, end_preorder_enum);
 }
 
-OrgChart &OrgChart::add_root(const string &vertex_param)
+OrgChart &OrgChart::add_root(const string &vertex_name)
 {
     /**
-     * @brief Construct a new if object with the given vertex_param
+     * @brief Construct a new if object with the given vertex_name
      *
      */
     if (root_tree == nullptr)
     {
-        root_tree = new Node(vertex_param);
+        root_tree = new Node(vertex_name);
     }
     else
     {
-        // free the old root and make a new one
-        delete root_tree;
-        root_tree = new Node(vertex_param);
-        // root_tree->value = vertex_param;
+        
+        root_tree->value = vertex_name;
     }
     return *this;
 }
@@ -261,7 +260,7 @@ OrgChart &OrgChart::add_sub(const string &exsist, const string &insert_param)
     Node *found = find_n(exsist, root_tree);
     if (found == nullptr)
     {
-        throw invalid_argument("not exist");
+        throw invalid_argument("not father exsist");
     }
     if (found->children.empty())
     {
@@ -276,6 +275,8 @@ OrgChart &OrgChart::add_sub(const string &exsist, const string &insert_param)
     return *this;
 }
 
+
+
 OrgChart::OrgChart(const OrgChart &other)
 {
     /**
@@ -284,10 +285,7 @@ OrgChart::OrgChart(const OrgChart &other)
      */
 
     root_tree = new Node(other.root_tree->value);
-    for (auto i = other.root_tree->children.begin(); i != other.root_tree->children.end(); ++i)
-    {
-        add_sub(root_tree->value, (*i)->value);
-    }
+    
 }
 
 OrgChart::OrgChart(OrgChart &&other) noexcept
@@ -336,7 +334,6 @@ OrgChart::Node *OrgChart::find_n(const string &find, OrgChart::Node *node)
 
 OrgChart::Node::Node(const string &value)
 {
-
     this->value = string(value);
 }
 
