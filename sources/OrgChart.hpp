@@ -46,7 +46,42 @@ namespace ariel
     private:
         class Node
         {
-        public:
+            public:
+
+    // Move Constructor
+    Node(Node &&other) noexcept
+    {
+        this->children = std::move(other.children);
+    }
+
+    // Move Assignment Operator
+    Node &operator=(Node &&other) noexcept
+    {
+        if (this != &other)
+        {
+            this->children = std::move(other.children);
+
+        }
+        return *this;
+    }
+
+    // Copy constructor
+    Node(const Node &other)
+    {
+        this->children = other.children;
+    }
+
+    // Copy assignment operator
+    Node &operator=(const Node &other)
+    {
+        if (this != &other)
+        {
+            this->children = other.children;
+        }
+        return *this;
+    }
+
+
             explicit Node(const string &);
             vector<Node *> children;
             string value;
@@ -57,7 +92,7 @@ namespace ariel
     public:
         Node *root_tree = nullptr;
         vector<Node *> delete_list; // everything that helper needs to be private for future
-        
+
         OrgChart() = default;
 
         // deep copy
@@ -67,15 +102,64 @@ namespace ariel
         ~OrgChart();
         OrgChart &add_root(const string &);
         OrgChart &add_sub(const string &, const string &);
+        // Move Constructor
+        OrgChart(OrgChart &&other) noexcept
+        {
+            this->root_tree = other.root_tree;
+            other.root_tree = nullptr;
+        };
+        // Move Assignment
+        OrgChart &operator=(OrgChart &&other) noexcept
+        {
+            if (this != &other)
+            {
+                this->root_tree = other.root_tree;
+                other.root_tree = nullptr;
+            }
+            return *this;
+        };
 
         class Iterator
         {
         public:
+            // Move Constructor
+            Iterator(Iterator &&source) noexcept
+            {
+                this->current = source.current;
+            };
+            // Move Assignment
+            Iterator &operator=(Iterator &&source) noexcept
+            {
+                this->current = source.current;
+                return *this;
+            };
+            // Copy Constructor
+            Iterator(const Iterator &source) noexcept
+            {
+                this->current = source.current;
+            };
+            // Copy Assignment
+            Iterator &operator=(const Iterator &source) noexcept
+            {
+                // handle self-assignment
+                if (this == &source)
+                {
+                    return *this;
+                }
+
+                this->current = source.current;
+
+                return *this;
+            };
+
             Node *current;
             constexpr static Node *end_helper_iterator = nullptr;
             list<Node *> inner_list;
             Iterator() : current(nullptr) {}
-            ~Iterator() = default;
+            ~Iterator()
+            {
+                current = nullptr;
+            };
             explicit Iterator(Node *temp) : current(temp) {}
             void generate_begin_reverse_order_iterator(Node *);
             void generate_begin_level_order_iterator(Node *);
